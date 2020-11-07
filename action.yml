@@ -1,4 +1,4 @@
-name: "Versioning"
+name: "npm-versioning-action"
 description: "Generate version number base on Git branch"
 inputs:
   release-branch:
