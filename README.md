@@ -10,7 +10,7 @@ outputs:
 
 - version, the version string generated
 
-For release branch (default **_master_**), version string is generated base on the semantic version specific in **_package.json_** file.
+For release branch (default **_master_**), version string is generated based on the semantic version specified in **_package.json_** file.
 
 For other branches, version string is generated using `${package.json semantic version}-${branchName}.${commitCount}` format.
 
@@ -26,7 +26,7 @@ Basic usage:
 >
 > run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
 
-Use a different release branch:
+Specify a different release branch:
 
 > -- name: npm versioning
 >
