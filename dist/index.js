@@ -34,7 +34,7 @@ async function main() {
         },
       },
     };
-    exec.exec("git", ["branch", "--show-current"], branchNameOptions);
+    exec.exec("git", ["name-rev", "--name-only", "HEAD"], branchNameOptions);
     const branchName = (await branchNamePromise)
       .replace("\r", "")
       .replace("\n", "");
