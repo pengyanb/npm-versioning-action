@@ -1,9 +1,11 @@
 const core = require("@actions/core");
 const exec = require("@actions/exec");
+const io = require("@actions/io");
 const { promises: fs } = require("fs");
 
 async function main() {
   try {
+    const gitPath = await io.which("git", true);
     let versioningName = "";
     let defaultReleaseBranchs = core.getInput("who-to-greet");
     if (defaultReleaseBranchs.includes(",")) {
@@ -26,7 +28,7 @@ async function main() {
         },
       },
     };
-    exec.exec("git", ["branch", "--show-current"], branchNameOptions);
+    exec.exec(`"${gitPath}"`, ["branch", "--show-current"], branchNameOptions);
     const branchName = (await branchNamePromise)
       .replace("/", "_")
       .replace("\r", "")
@@ -56,7 +58,11 @@ async function main() {
           },
         },
       };
-      exec.exec("git", ["rev-list", "--count", "HEAD"], countCommitsOptions);
+      exec.exec(
+        `"${gitPath}"`,
+        ["rev-list", "--count", "HEAD"],
+        countCommitsOptions
+      );
       const commitCount = (await countCommitPromise)
         .replace("\r", "")
         .replace("\n", "");
