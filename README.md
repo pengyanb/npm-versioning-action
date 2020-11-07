@@ -16,28 +16,44 @@ For other branches, version string is generated using `${package.json semantic v
 
 Basic usage:
 
-> - name: npm versioning
->   id: npmVersioning
->   uses: pengyanb/npm-versioning-action@v1
-> - name: dummy versioning usage
->   run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+> -- name: npm versioning
+>
+> id: npmVersioning
+>
+> uses: pengyanb/npm-versioning-action@v1
+>
+> -- name: dummy versioning usage
+>
+> run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
 
 Use a different release branch:
 
-> - name: npm versioning
->   id: npmVersioning
->   uses: pengyanb/npm-versioning-action@v1
->   with:
->   release-branch: "develop"
-> - name: dummy versioning usage
->   run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+> -- name: npm versioning
+>
+> id: npmVersioning
+>
+> uses: pengyanb/npm-versioning-action@v1
+>
+> with:
+>
+> release-branch: "develop"
+>
+> -- name: dummy versioning usage
+>
+> run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
 
 set multiple release branches:
 
-> - name: npm versioning
->   id: npmVersioning
->   uses: pengyanb/npm-versioning-action@v1
->   with:
->   release-branch: "develop,master"
-> - name: dummy versioning usage
->   run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+> -- name: npm versioning
+>
+> id: npmVersioning
+>
+> uses: pengyanb/npm-versioning-action@v1
+>
+> with:
+>
+> release-branch: "develop,master"
+>
+> -- name: dummy versioning usage
+>
+> run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
