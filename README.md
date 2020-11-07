@@ -13,3 +13,8 @@ outputs:
 For release branch (default **_master_**), version string is generated base on the semantic version specific in **_package.json_** file.
 
 For other branches, version string is generated using `${package.json semantic version}-${branchName}.${commitCount}` format.
+
+How to use:
+
+> - name: npm versioning
+>   uses: pengyanb/npm-versioning-action@v1
