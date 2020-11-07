@@ -6,7 +6,6 @@ module.exports =
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 const core = __webpack_require__(186);
-const github = __webpack_require__(716);
 const exec = __webpack_require__(514);
 const { promises: fs } = __webpack_require__(747);
 
@@ -1629,14 +1628,6 @@ function copyFile(srcFile, destFile, force) {
     });
 }
 //# sourceMappingURL=io.js.map
-
-/***/ }),
-
-/***/ 716:
-/***/ ((module) => {
-
-module.exports = eval("require")("@actions/github");
-
 
 /***/ }),
 
