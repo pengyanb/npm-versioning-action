@@ -28,7 +28,10 @@ async function main() {
       },
     };
     exec.exec("git", ["branch", "--show-current"], branchNameOptions);
-    const branchName = (await branchNamePromise).replace("/", "_");
+    const branchName = (await branchNamePromise)
+      .replace("/", "_")
+      .replace("\r", "")
+      .replace("\n", "");
     console.log("branchName: ", branchName);
 
     const packageJson = JSON.parse(
@@ -39,8 +42,28 @@ async function main() {
     if (defaultReleaseBranchs.includes(branchName)) {
       versioningName = packageJson.version;
     } else {
-      versioningName = `${packageJson.version}-${branchName}`;
+      let countResolve, countReject;
+      const countCommitPromise = new Promise((rs, rj) => {
+        countResolve = rs;
+        countReject = rj;
+      });
+      const countCommitsOptions = {
+        listeners: {
+          stdout: (data) => {
+            countResolve(data.toString());
+          },
+          stderr: (err) => {
+            reject({ message: err.toString() });
+          },
+        },
+      };
+      exec.exec("git", ["rev-list", "--count", "HEAD"], countCommitsOptions);
+      const commitCount = (await countCommitPromise)
+        .replace("\r", "")
+        .replace("\n", "");
+      versioningName = `${packageJson.version}-${branchName}.${commitCount}`;
     }
+    console.log("versioning name: ", versioningName);
     core.setOutput("version", versioningName);
   } catch (error) {
     core.setFailed(error.message);
