@@ -7,7 +7,7 @@ async function main() {
   try {
     const gitPath = await io.which("git", true);
     let versioningName = "";
-    let defaultReleaseBranchs = core.getInput("who-to-greet");
+    let defaultReleaseBranchs = core.getInput("release-branch");
     if (defaultReleaseBranchs.includes(",")) {
       defaultReleaseBranchs = defaultReleaseBranchs.split(",");
     } else {

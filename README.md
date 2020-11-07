@@ -14,7 +14,30 @@ For release branch (default **_master_**), version string is generated base on t
 
 For other branches, version string is generated using `${package.json semantic version}-${branchName}.${commitCount}` format.
 
-How to use:
+Basic usage:
 
 > - name: npm versioning
+>   id: npmVersioning
 >   uses: pengyanb/npm-versioning-action@v1
+> - name: dummy versioning usage
+>   run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+
+Use a different release branch:
+
+> - name: npm versioning
+>   id: npmVersioning
+>   uses: pengyanb/npm-versioning-action@v1
+>   with:
+>   release-branch: "develop"
+> - name: dummy versioning usage
+>   run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+
+set multiple release branches:
+
+> - name: npm versioning
+>   id: npmVersioning
+>   uses: pengyanb/npm-versioning-action@v1
+>   with:
+>   release-branch: "develop,master"
+> - name: dummy versioning usage
+>   run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
