@@ -1,0 +1,13 @@
+name: "Versioning"
+description: "Generate version number base on Git branch"
+inputs:
+  release-branch:
+    description: "release branch name, which semantic version is generated without suffix"
+    required: true
+    default: "master"
+outputs:
+  version:
+    description: "versioning information generated"
+runs:
+  using: "node12"
+  main: "index.js"
