@@ -1,17 +1,20 @@
 {
-  "name": "versioningAction",
+  "name": "@implicitcast/npm-versioning-action",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "github action that generates versioning string base on the npm version value, branch name and commit number",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "build": "ncc build index.js --license licenses.txt"
   },
   "keywords": [],
   "author": "Peng Yanbing <info@implicitcast.com> (http://implicitcast.com)",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "@actions/exec": "^1.0.4",
-    "@actions/github": "^4.0.0"
+    "@actions/exec": "^1.0.4"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.25.1"
   }
 }

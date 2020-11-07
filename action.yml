@@ -10,4 +10,4 @@ outputs:
     description: "versioning information generated"
 runs:
   using: "node12"
-  main: "index.js"
+  main: "dist/index.js"
