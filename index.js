@@ -30,10 +30,9 @@ async function main() {
     };
     exec.exec(`"${gitPath}"`, ["branch", "--show-current"], branchNameOptions);
     const branchName = (await branchNamePromise)
-      .replace("/", "_")
       .replace("\r", "")
       .replace("\n", "");
-    console.log("branchName: ", branchName);
+    const branchNameEscaped = branchName.replace("/", "_");
 
     const packageJson = JSON.parse(
       (await fs.readFile("./package.json")).toString()
@@ -66,7 +65,7 @@ async function main() {
       const commitCount = (await countCommitPromise)
         .replace("\r", "")
         .replace("\n", "");
-      versioningName = `${packageJson.version}-${branchName}.${commitCount}`;
+      versioningName = `${packageJson.version}-${branchNameEscaped}.${commitCount}`;
     }
     console.log("versioning name: ", versioningName);
     core.setOutput("version", versioningName);
