@@ -12,7 +12,6 @@ const { promises: fs } = __webpack_require__(747);
 
 async function main() {
   try {
-    const gitPath = await io.which("git", true);
     let versioningName = "";
     let defaultReleaseBranchs = core.getInput("release-branch");
     if (defaultReleaseBranchs.includes(",")) {
@@ -35,7 +34,7 @@ async function main() {
         },
       },
     };
-    exec.exec(`"${gitPath}"`, ["branch", "--show-current"], branchNameOptions);
+    exec.exec("git", ["branch", "--show-current"], branchNameOptions);
     const branchName = (await branchNamePromise)
       .replace("\r", "")
       .replace("\n", "");
@@ -64,11 +63,7 @@ async function main() {
           },
         },
       };
-      exec.exec(
-        `"${gitPath}"`,
-        ["rev-list", "--count", "HEAD"],
-        countCommitsOptions
-      );
+      exec.exec("git", ["rev-list", "--count", "HEAD"], countCommitsOptions);
       const commitCount = (await countCommitPromise)
         .replace("\r", "")
         .replace("\n", "");
