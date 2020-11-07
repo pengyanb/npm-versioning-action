@@ -1,6 +1,7 @@
 name: "npm-versioning-action"
-icon: "check-circle"
-color: "green"
+branding:
+  icon: "check-circle"
+  color: "green"
 description: "Generate version number base on Git branch"
 inputs:
   release-branch:
