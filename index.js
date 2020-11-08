@@ -6,6 +6,7 @@ const { promises: fs } = require("fs");
 async function main() {
   try {
     let versioningName = "";
+    let tag = "beta";
     let defaultReleaseBranchs = core.getInput("release-branch");
     if (defaultReleaseBranchs.includes(",")) {
       defaultReleaseBranchs = defaultReleaseBranchs.split(",");
@@ -40,6 +41,7 @@ async function main() {
 
     if (defaultReleaseBranchs.includes(branchName)) {
       versioningName = packageJson.version;
+      tag = "latest";
     } else {
       let countResolve, countReject;
       const countCommitPromise = new Promise((rs, rj) => {
@@ -62,8 +64,9 @@ async function main() {
         .replace("\n", "");
       versioningName = `${packageJson.version}-${branchNameEscaped}.${commitCount}`;
     }
-    console.log("versioning name: ", versioningName);
+    console.log(`versioning name: ${versioningName}, tag: ${tag}`);
     core.setOutput("version", versioningName);
+    core.setOutput("tag", tag);
   } catch (error) {
     core.setFailed(error.message);
   }

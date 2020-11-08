@@ -11,6 +11,8 @@ inputs:
 outputs:
   version:
     description: "versioning information generated"
+  tag:
+    description: "latest for release branch, beta for other branches"
 runs:
   using: "node12"
   main: "dist/index.js"
