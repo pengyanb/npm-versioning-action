@@ -1,8 +1,8 @@
-### npm versioning action
+## npm versioning action
 
 Github action package that generates versioning string base on the npm version value, branch name and commit number.
 
-Inputs:
+### Inputs:
 
 - release-branch : string, default value **_master_**.
 
@@ -10,7 +10,7 @@ Inputs:
 
 - update-version : boolean, flag to indicate wheather to update package.json file, default value **_true_**
 
-outputs:
+### outputs:
 
 - version, the version string generated
   
@@ -20,71 +20,56 @@ For release branch (default **_master_**), version string is generated based on 
 
 For other branches, version string is generated using `${package.json semantic version}-${branchName}.${commitCount}` format.
 
-Basic usage:
+### Basic usage:
 
-> -- name: npm versioning
->
-> id: npmVersioning
->
-> uses: pengyanb/npm-versioning-action@v1
->
-> -- name: dummy versioning usage
->
-> run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+```yml
+- name: npm versioning
+  id: npmVersioning
+  uses: pengyanb/npm-versioning-action@v1
 
-Specify a different release branch:
+- name: dummy versioning usage
+  run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+```
 
-> -- name: npm versioning
->
-> id: npmVersioning
->
-> uses: pengyanb/npm-versioning-action@v1
->
-> with:
->
-> release-branch: "develop"
->
-> -- name: dummy versioning usage
->
-> run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+### Specify a different release branch:
 
-set multiple release branches:
+```yml
+- name: npm versioning
+  id: npmVersioning
+  uses: pengyanb/npm-versioning-action@v1
+  with:
+    release-branch: "develop"
 
-> -- name: npm versioning
->
-> id: npmVersioning
->
-> uses: pengyanb/npm-versioning-action@v1
->
-> with:
->
-> release-branch: "develop,master"
->
-> -- name: dummy versioning usage
->
-> run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+- name: dummy versioning usage
+  run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+```
 
-use with npm publish:
+### Set multiple release branches:
 
-> -- name: npm versioning
-> 
->   id: npmVersioning
-> 
->   uses: pengyanb/npm-versioning-action@v1
-> 
->   with:
-> 
->     release-branch: "master"
-> 
->     package-json-path: "./dist/package.json"
-> 
->     update-version: true
->
-> -- name: npm publish
-> 
->    run: run: npm publish ./dist --tag ${{ steps.npmVersioning.outputs.tag }} --dry-run true
-> 
->    env:
-> 
->       NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-> 
+```yml
+- name: npm versioning
+  id: npmVersioning
+  uses: pengyanb/npm-versioning-action@v1
+  with:
+    release-branch: "develop,master"
+
+- name: dummy versioning usage
+  run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+```
+
+### use with npm publish:
+
+```yml
+- name: npm versioning
+  id: npmVersioning
+  uses: pengyanb/npm-versioning-action@v1
+  with:
+    release-branch: "master" 
+    package-json-path: "./dist/package.json"
+    update-version: true
+
+- name: npm publish
+  run: run: npm publish ./dist --tag ${{ steps.npmVersioning.outputs.tag }} --dry-run true
+  env:
+    NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+```
