@@ -39,7 +39,7 @@ async function main() {
     const branchName = (await branchNamePromise)
       .replace("\r", "")
       .replace("\n", "");
-    const branchNameEscaped = branchName.replace("/", "_");
+    const branchNameEscaped = branchName.replace("/", "-");
 
     const packageJson = JSON.parse(
       (await fs.readFile("./package.json")).toString()
