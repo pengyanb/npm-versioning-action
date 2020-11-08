@@ -4,11 +4,17 @@ Github action package that generates versioning string base on the npm version v
 
 Inputs:
 
-- release-branch, default value **_master_**.
+- release-branch : string, default value **_master_**.
+
+- package-json-path : string, path to package.json file, default value **_./package.json_**
+
+- update-version : boolean, flag to indicate wheather to update package.json file, default value **_true_**
 
 outputs:
 
 - version, the version string generated
+  
+- tag: **_latest_** for release branch, **_beta_** for other branches
 
 For release branch (default **_master_**), version string is generated based on the semantic version specified in **_package.json_** file.
 

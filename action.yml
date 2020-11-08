@@ -8,6 +8,12 @@ inputs:
     description: "release branch name, which semantic version is generated without suffix"
     required: true
     default: "master"
+  package-json-path:
+    description: "path to package.json file"
+    default: "./package.json"
+  update-version:
+    description: "update package.json version after version is generated"
+    default: true
 outputs:
   version:
     description: "versioning information generated"

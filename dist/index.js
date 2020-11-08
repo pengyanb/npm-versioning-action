@@ -15,6 +15,8 @@ async function main() {
     let versioningName = "";
     let tag = "beta";
     let defaultReleaseBranchs = core.getInput("release-branch");
+    const packageJsonPath = core.getInput("package-json-path");
+    const updateVersion = core.getInput("update-version");
     if (defaultReleaseBranchs.includes(",")) {
       defaultReleaseBranchs = defaultReleaseBranchs.split(",");
     } else {
@@ -42,7 +44,7 @@ async function main() {
     const branchNameEscaped = branchName.replace("/", "-");
 
     const packageJson = JSON.parse(
-      (await fs.readFile("./package.json")).toString()
+      (await fs.readFile(packageJsonPath)).toString()
     );
     console.log("packageJsonVersion: ", packageJson.version);
 
@@ -70,10 +72,12 @@ async function main() {
         .replace("\r", "")
         .replace("\n", "");
       versioningName = `${packageJson.version}-${branchNameEscaped}.${commitCount}`;
+      packageJson.version = versioningName;
     }
     console.log(`versioning name: ${versioningName}, tag: ${tag}`);
     core.setOutput("version", versioningName);
     core.setOutput("tag", tag);
+    await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
   } catch (error) {
     core.setFailed(error.message);
   }
