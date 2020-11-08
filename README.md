@@ -63,3 +63,28 @@ set multiple release branches:
 > -- name: dummy versioning usage
 >
 > run: echo "Generated version is \${{ steps.npmVersioning.outputs.version}}"
+
+use with npm publish:
+
+> -- name: npm versioning
+> 
+>   id: npmVersioning
+> 
+>   uses: pengyanb/npm-versioning-action@v1
+> 
+>   with:
+> 
+>     release-branch: "master"
+> 
+>     package-json-path: "./dist/package.json"
+> 
+>     update-version: true
+>
+> -- name: npm publish
+> 
+>    run: run: npm publish ./dist --tag ${{ steps.npmVersioning.outputs.tag }} --dry-run true
+> 
+>    env:
+> 
+>       NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+> 
