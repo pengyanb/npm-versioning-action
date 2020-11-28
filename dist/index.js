@@ -7,16 +7,19 @@ module.exports =
 
 const core = __webpack_require__(186);
 const exec = __webpack_require__(514);
-const io = __webpack_require__(436);
 const { promises: fs } = __webpack_require__(747);
 
 async function main() {
   try {
     let versioningName = "";
     let tag = "beta";
-    let defaultReleaseBranchs = core.getInput("release-branch");
-    const packageJsonPath = core.getInput("package-json-path");
-    const updateVersion = core.getInput("update-version");
+    let defaultReleaseBranchs = core.getInput("release-branch") || "master";
+    const packageJsonPath =
+      core.getInput("package-json-path") || "./package.json";
+    const updateVersion = core.getInput("update-version") || "true";
+    console.log("defaultReleaseBranch: ", defaultReleaseBranchs);
+    console.log("packageJsonPath: ", packageJsonPath);
+    console.log("updateVersion: ", updateVersion);
     if (defaultReleaseBranchs.includes(",")) {
       defaultReleaseBranchs = defaultReleaseBranchs.split(",");
     } else {
@@ -69,13 +72,15 @@ async function main() {
       };
       exec.exec(
         "git",
-        ["rev-list", "--count", "HEAD", "^" + branchName],
+        ["log", "--abbrev-commit", "--pretty=oneline"],
         countCommitsOptions
       );
       const commitCount = (await countCommitPromise)
         .replace("\r", "")
         .replace("\n", "");
       versioningName = `${packageJson.version}-${branchNameEscaped}.${commitCount}`;
+    }
+    if (updateVersion === "true") {
       packageJson.version = versioningName;
     }
     console.log(`versioning name: ${versioningName}, tag: ${tag}`);
