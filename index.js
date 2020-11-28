@@ -60,7 +60,11 @@ async function main() {
           },
         },
       };
-      exec.exec("git", ["rev-list", "--count", "HEAD"], countCommitsOptions);
+      exec.exec(
+        "git",
+        ["rev-list", "--count", "HEAD", "^" + branchName],
+        countCommitsOptions
+      );
       const commitCount = (await countCommitPromise)
         .replace("\r", "")
         .replace("\n", "");
