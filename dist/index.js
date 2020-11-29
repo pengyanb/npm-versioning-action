@@ -13,7 +13,7 @@ async function main() {
   try {
     let versioningName = "";
     let tag = "beta";
-    let defaultReleaseBranchs = core.getInput("release-branch") || "master";
+    let defaultReleaseBranchs = core.getInput("release-branch") || "develop";
     const packageJsonPath =
       core.getInput("package-json-path") || "./package.json";
     const updateVersion = core.getInput("update-version") || "true";
@@ -56,17 +56,23 @@ async function main() {
       tag = "latest";
     } else {
       let countResolve, countReject;
+      let commitCount = 0;
       const countCommitPromise = new Promise((rs, rj) => {
         countResolve = rs;
         countReject = rj;
       });
       const countCommitsOptions = {
         listeners: {
-          stdout: (data) => {
-            countResolve(data.toString());
+          stdout: () => {
+            commitCount++;
           },
           stderr: (err) => {
             reject({ message: err.toString() });
+          },
+          debug: (message) => {
+            if (message.includes("STDIO streams have closed for tool")) {
+              countResolve();
+            }
           },
         },
       };
@@ -75,9 +81,8 @@ async function main() {
         ["log", "--abbrev-commit", "--pretty=oneline"],
         countCommitsOptions
       );
-      const commitCount = (await countCommitPromise)
-        .replace("\r", "")
-        .replace("\n", "");
+      await countCommitPromise;
+      console.log("commitCount: ", commitCount);
       versioningName = `${packageJson.version}-${branchNameEscaped}.${commitCount}`;
     }
     if (updateVersion === "true") {
