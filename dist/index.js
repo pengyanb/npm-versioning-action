@@ -13,7 +13,7 @@ async function main() {
   try {
     let versioningName = "";
     let tag = "beta";
-    let defaultReleaseBranchs = core.getInput("release-branch") || "develop";
+    let defaultReleaseBranchs = core.getInput("release-branch") || "master";
     const packageJsonPath =
       core.getInput("package-json-path") || "./package.json";
     const updateVersion = core.getInput("update-version") || "true";
