@@ -2,6 +2,14 @@
 
 Github action package that generates versioning string base on the npm version value, branch name and commit number.
 
+> **WARNING**: when use with **actions/checkout@v2**, remember to fetch all history by passing the fetch-depth option
+```yml
+- uses: actions/checkout@v2
+  with:
+    fetch-depth: 0
+```
+
+
 ### Inputs:
 
 - release-branch : string, default value **_master_**.
