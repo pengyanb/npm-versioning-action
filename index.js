@@ -56,13 +56,15 @@ async function main() {
       });
       const countCommitsOptions = {
         listeners: {
-          stdout: () => {
+          stdout: (message) => {
+            console.log("Commit: ", message);
             commitCount++;
           },
           stderr: (err) => {
             reject({ message: err.toString() });
           },
           debug: (message) => {
+            console.log("DEBUG: ", message);
             if (message.includes("STDIO streams have closed for tool")) {
               countResolve();
             }
