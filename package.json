@@ -11,8 +11,7 @@
   "author": "Peng Yanbing <info@implicitcast.com> (http://implicitcast.com)",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/exec": "^1.0.4"
+    "@actions/core": "^1.2.6"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.25.1"

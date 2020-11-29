@@ -1,6 +1,7 @@
 const core = require("@actions/core");
-const exec = require("@actions/exec");
 const { promises: fs } = require("fs");
+const util = require("util");
+const { spawn } = require("child_process");
 
 async function main() {
   try {
@@ -23,17 +24,13 @@ async function main() {
       resolve = rs;
       reject = rj;
     });
-    const branchNameOptions = {
-      listeners: {
-        stdout: (data) => {
-          resolve(data.toString());
-        },
-        stderr: (err) => {
-          reject({ message: err.toString() });
-        },
-      },
-    };
-    exec.exec("git", ["name-rev", "--name-only", "HEAD"], branchNameOptions);
+    const branchNameProcess = spawn("git", ["name-rev", "--name-only", "HEAD"]);
+    branchNameProcess.stdout.on("data", (data) => {
+      resolve(data.toString());
+    });
+    branchNameProcess.stderr.on("data", (data) => {
+      reject(data.toString());
+    });
     const branchName = (await branchNamePromise)
       .replace("\r", "")
       .replace("\n", "");
@@ -54,28 +51,23 @@ async function main() {
         countResolve = rs;
         countReject = rj;
       });
-      const countCommitsOptions = {
-        listeners: {
-          stdout: (message) => {
-            console.log("Commit: ", message);
-            commitCount++;
-          },
-          stderr: (err) => {
-            reject({ message: err.toString() });
-          },
-          debug: (message) => {
-            console.log("DEBUG: ", message);
-            if (message.includes("STDIO streams have closed for tool")) {
-              countResolve();
-            }
-          },
-        },
-      };
-      exec.exec(
-        "git",
-        ["log", "--abbrev-commit", "--pretty=oneline"],
-        countCommitsOptions
-      );
+
+      const countCommitProcess = spawn("git", [
+        "log",
+        "--abbrev-commit",
+        "--pretty=oneline",
+      ]);
+      countCommitProcess.stdout.on("data", (data) => {
+        console.log("Commit: ", data.toString());
+        commitCount++;
+      });
+      countCommitProcess.stderr.on("data", (err) => {
+        countReject(err.toString());
+      });
+      countCommitProcess.on("close", () => {
+        console.log("Count Commit process close.");
+        countResolve();
+      });
       await countCommitPromise;
       console.log("commitCount: ", commitCount);
       versioningName = `${packageJson.version}-${branchNameEscaped}.${commitCount}`;
