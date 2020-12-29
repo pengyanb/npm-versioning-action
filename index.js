@@ -1,4 +1,5 @@
 const core = require("@actions/core");
+const github = require("@actions/github");
 const { promises: fs } = require("fs");
 const { spawn } = require("child_process");
 
@@ -18,19 +19,9 @@ async function main() {
     } else {
       defaultReleaseBranchs = [defaultReleaseBranchs];
     }
-    let resolve, reject;
-    const branchNamePromise = new Promise((rs, rj) => {
-      resolve = rs;
-      reject = rj;
-    });
-    const branchNameProcess = spawn("git", ["branch", "--show-current"]);
-    branchNameProcess.stdout.on("data", (data) => {
-      resolve(data.toString());
-    });
-    branchNameProcess.stderr.on("data", (data) => {
-      reject(data.toString());
-    });
-    const branchName = (await branchNamePromise)
+
+    const branchName = github.context.ref
+      .replace("refs/heads/", "")
       .replace("\r", "")
       .replace("\n", "");
     const branchNameEscaped = branchName.replace("/", "-");
