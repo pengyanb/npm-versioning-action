@@ -23,7 +23,7 @@ async function main() {
       resolve = rs;
       reject = rj;
     });
-    const branchNameProcess = spawn("git", ["name-rev", "--name-only", "HEAD"]);
+    const branchNameProcess = spawn("git", ["branch", "--show-current"]);
     branchNameProcess.stdout.on("data", (data) => {
       resolve(data.toString());
     });
