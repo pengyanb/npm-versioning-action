@@ -7,14 +7,13 @@ module.exports =
 
 const core = __webpack_require__(186);
 const { promises: fs } = __webpack_require__(747);
-const util = __webpack_require__(669);
 const { spawn } = __webpack_require__(129);
 
 async function main() {
   try {
     let versioningName = "";
     let tag = "beta";
-    let defaultReleaseBranchs = core.getInput("release-branch") || "develop";
+    let defaultReleaseBranchs = core.getInput("release-branch") || "master";
     const packageJsonPath =
       core.getInput("package-json-path") || "./package.json";
     const updateVersion = core.getInput("update-version") || "true";
@@ -47,7 +46,11 @@ async function main() {
       (await fs.readFile(packageJsonPath)).toString()
     );
     console.log("packageJsonVersion: ", packageJson.version);
-
+    console.log(
+      `defaultReleaseBranchs${JSON.stringify(
+        defaultReleaseBranchs
+      )}, branchName: ${branchName}`
+    );
     if (defaultReleaseBranchs.includes(branchName)) {
       versioningName = packageJson.version;
       tag = "latest";
@@ -510,14 +513,6 @@ module.exports = require("os");;
 
 "use strict";
 module.exports = require("path");;
-
-/***/ }),
-
-/***/ 669:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("util");;
 
 /***/ })
 
