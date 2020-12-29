@@ -1,6 +1,5 @@
 const core = require("@actions/core");
 const { promises: fs } = require("fs");
-const util = require("util");
 const { spawn } = require("child_process");
 
 async function main() {
@@ -40,7 +39,11 @@ async function main() {
       (await fs.readFile(packageJsonPath)).toString()
     );
     console.log("packageJsonVersion: ", packageJson.version);
-
+    console.log(
+      `defaultReleaseBranchs${JSON.stringify(
+        defaultReleaseBranchs
+      )}, branchName: ${branchName}`
+    );
     if (defaultReleaseBranchs.includes(branchName)) {
       versioningName = packageJson.version;
       tag = "latest";
